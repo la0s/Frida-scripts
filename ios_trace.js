@@ -63,7 +63,13 @@ function trace(pattern) {
     targets.forEach(function(target) {
         if (type === "objc") {
             var filter = [  //过滤条件，方法名称中不含以下关键词
-                "TNTunnel"
+                "TNTunnel",
+                "SDK",
+                "monitor",
+                "Monitor",
+                "pvWithCommand",
+                "_",
+                "LTMBLSearchRequestBaseBizLogic"
             ];
             for (var i = 0, Traceflag = 0; i < filter.length; i++) {
                 if (target.name.indexOf(filter[i]) != -1) {
