@@ -16,4 +16,5 @@ trace("\*[\* \*md5\*]") --> 模糊Hook某应用签名
 * 由于原始CCCrypt函数的加解密结果存在原始的字节流，不方便查找和过滤，增加Base64转化过程。
 * 当KEY与IV不是明文时，以Hex形式打印，并对原始的CCCrypt函数参数进行翻译。
 #### 举例
+拦截CCCrypt加密过程
 ![](./Images/CC_Hook_2Base64.png)
