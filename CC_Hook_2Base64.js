@@ -76,7 +76,7 @@ Interceptor.attach(Module.findExportByName('libcommonCrypto.dylib', 'CCCrypt'), 
             // };
             // typedef uint32_t CCOptions;
             if (this.CCOptions == 0x0 || this.CCOptions == 0x1) {console.log("[+] CCOptions: " + this.CCOptions + " --> mode CBC");}
-            if (this.CCOptions == 0x2 || this.CCOptions == 0x3) {console.log("[+] CCOptions: " + this.CCOptions + " --> mode ECB");}    // kCCOptionPKCS7Padding | kCCOptionECBMode == 0x03
+            if (this.CCOptions == 0x2 || this.CCOptions == 0x3) {console.log("[+] CCOptions: " + this.CCOptions + " --> mode ECB");} // kCCOptionPKCS7Padding | kCCOptionECBMode == 0x03
             // if (this.CCOptions != 0x1 && this.CCOptions != 0x3) {console.log("[+] CCOptions: " + this.CCOptions);}
 
             console.log(Memory.readByteArray(this.inBuffer, this.inLength.toInt32()));
@@ -96,7 +96,7 @@ Interceptor.attach(Module.findExportByName('libcommonCrypto.dylib', 'CCCrypt'), 
                 //         str += hextemp + " ";
                 // }
 
-                // console.log("[+] Before Encrypt: " + str);  // 打印hex,非可见ascii范围
+                // console.log("[+] Before Encrypt: " + str); // 打印hex,非可见ascii范围
             }  
             
             console.log(Memory.readByteArray(this.keyBytes, this.keyLength.toInt32()));
@@ -139,11 +139,11 @@ Interceptor.attach(Module.findExportByName('libcommonCrypto.dylib', 'CCCrypt'), 
                         str += hextemp + " ";
                     }
 
-                    console.log("[+] IV: " + str);  // 打印hex,非可见ascii范围
+                    console.log("[+] IV: " + str); // 打印hex,非可见ascii范围
                 }
             }
              
-            // console.log(Memory.readByteArray(this.outBuffer, Memory.readUInt(this.outCountPtr)));   // 打印hex,非可见ascii范围
+            // console.log(Memory.readByteArray(this.outBuffer, Memory.readUInt(this.outCountPtr))); // 打印hex,非可见ascii范围
             var array = new Uint8Array(Memory.readByteArray(this.outBuffer, Memory.readUInt(this.outCountPtr)));
             console.log("[+] After Encrypt: " + base64encode(bin2string(array)));
 
@@ -172,7 +172,7 @@ Interceptor.attach(Module.findExportByName('libcommonCrypto.dylib', 'CCCrypt'), 
             // };
             // typedef uint32_t CCOptions;
             if (this.CCOptions == 0x0 || this.CCOptions == 0x1) {console.log("[+] CCOptions: " + this.CCOptions + " --> mode CBC");}
-            if (this.CCOptions == 0x2 || this.CCOptions == 0x3) {console.log("[+] CCOptions: " + this.CCOptions + " --> mode ECB");}    // kCCOptionPKCS7Padding | kCCOptionECBMode == 0x03
+            if (this.CCOptions == 0x2 || this.CCOptions == 0x3) {console.log("[+] CCOptions: " + this.CCOptions + " --> mode ECB");} // kCCOptionPKCS7Padding | kCCOptionECBMode == 0x03
             // if (this.CCOptions != 0x1 && this.CCOptions != 0x3) {console.log("[+] CCOptions: " + this.CCOptions);}
 
             var array = new Uint8Array(Memory.readByteArray(this.inBuffer, this.inLength.toInt32()));
@@ -239,7 +239,7 @@ Interceptor.attach(Module.findExportByName('libcommonCrypto.dylib', 'CCCrypt'), 
                 //         str += hextemp + " ";
                 // }
 
-                // console.log("[+] Before Encrypt: " + str);  // 打印hex,非可见ascii范围
+                // console.log("[+] After Decrypt: " + str); // 打印hex,非可见ascii范围
             } 
             
             //console.log('\tBacktrace:\n\t' + Thread.backtrace(this.context,Backtracer.ACCURATE).map(DebugSymbol.fromAddress).join('\n\t'));
