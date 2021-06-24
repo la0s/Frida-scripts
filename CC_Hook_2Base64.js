@@ -81,7 +81,7 @@ Interceptor.attach(Module.findExportByName('libcommonCrypto.dylib', 'CCCrypt'), 
 
             console.log(Memory.readByteArray(this.inBuffer, this.inLength.toInt32()));
             try {
-                console.log("[+] Before Encrypt: " + Memory.readUtf8String(this.inBuffer, this.inLength.toInt32()));  //防止非可见ascii范围
+                console.log("[+] Before Encrypt: " + Memory.readUtf8String(this.inBuffer, this.inLength.toInt32()));
             } catch(e) {
                 // var ByteArray = Memory.readByteArray(this.inBuffer, this.inLength.toInt32());
                 // var uint8Array = new Uint8Array(ByteArray);
@@ -96,7 +96,7 @@ Interceptor.attach(Module.findExportByName('libcommonCrypto.dylib', 'CCCrypt'), 
                 //         str += hextemp + " ";
                 // }
 
-                // console.log("[+] Before Encrypt: " + str); // 打印hex
+                // console.log("[+] Before Encrypt: " + str);  // 打印hex,非可见ascii范围
             }  
             
             console.log(Memory.readByteArray(this.keyBytes, this.keyLength.toInt32()));
@@ -104,7 +104,7 @@ Interceptor.attach(Module.findExportByName('libcommonCrypto.dylib', 'CCCrypt'), 
             if (this.keyLength.toInt32() == 24) {console.log("[+] KEY Length --> 192");}
             if (this.keyLength.toInt32() == 32) {console.log("[+] KEY Length --> 256");}
             try {
-                console.log("[+] KEY: " + Memory.readUtf8String(this.keyBytes, this.keyLength.toInt32()));  //防止非可见ascii范围
+                console.log("[+] KEY: " + Memory.readUtf8String(this.keyBytes, this.keyLength.toInt32()));
             } catch(e) {
                 var ByteArray = Memory.readByteArray(this.keyBytes, this.keyLength.toInt32());
                 var uint8Array = new Uint8Array(ByteArray);
@@ -119,13 +119,13 @@ Interceptor.attach(Module.findExportByName('libcommonCrypto.dylib', 'CCCrypt'), 
                         str += hextemp + " ";
                 }
 
-                console.log("[+] KEY: " + str); // 打印hex
+                console.log("[+] KEY: " + str); // 打印hex,非可见ascii范围
             }     
 
             if (this.CCOptions == 0x0 || this.CCOptions == 0x1) {
                 console.log(Memory.readByteArray(this.ivBuffer, this.keyLength.toInt32()));
                 try {
-                    console.log("[+] IV: " + Memory.readUtf8String(this.ivBuffer, this.keyLength.toInt32()));   //防止非可见ascii范围
+                    console.log("[+] IV: " + Memory.readUtf8String(this.ivBuffer, this.keyLength.toInt32()));
                 } catch(e) {
                     var ByteArray = Memory.readByteArray(this.ivBuffer, 16);
                     var uint8Array = new Uint8Array(ByteArray);
@@ -139,11 +139,11 @@ Interceptor.attach(Module.findExportByName('libcommonCrypto.dylib', 'CCCrypt'), 
                         str += hextemp + " ";
                     }
 
-                    console.log("[+] IV: " + str);  // 打印hex
+                    console.log("[+] IV: " + str);  // 打印hex,非可见ascii范围
                 }
             }
              
-
+            // console.log(Memory.readByteArray(this.outBuffer, Memory.readUInt(this.outCountPtr)));   // 打印hex,非可见ascii范围
             var array = new Uint8Array(Memory.readByteArray(this.outBuffer, Memory.readUInt(this.outCountPtr)));
             console.log("[+] After Encrypt: " + base64encode(bin2string(array)));
 
@@ -183,7 +183,7 @@ Interceptor.attach(Module.findExportByName('libcommonCrypto.dylib', 'CCCrypt'), 
             if (this.keyLength.toInt32() == 24) {console.log("[+] KEY Length --> 192");}
             if (this.keyLength.toInt32() == 32) {console.log("[+] KEY Length --> 256");}
             try {
-                console.log("[+] KEY: " + Memory.readUtf8String(this.keyBytes, this.keyLength.toInt32()));  //防止非可见ascii范围
+                console.log("[+] KEY: " + Memory.readUtf8String(this.keyBytes, this.keyLength.toInt32()));
             } catch(e) {
                 var ByteArray = Memory.readByteArray(this.keyBytes, this.keyLength.toInt32());
                 var uint8Array = new Uint8Array(ByteArray);
@@ -198,13 +198,13 @@ Interceptor.attach(Module.findExportByName('libcommonCrypto.dylib', 'CCCrypt'), 
                     str += hextemp + " ";
                 }
 
-                console.log("[+] KEY: " + str); // 打印hex
+                console.log("[+] KEY: " + str); // 打印hex,非可见ascii范围
             }     
 
             if (this.CCOptions == 0x0 || this.CCOptions == 0x1) {
                 console.log(Memory.readByteArray(this.ivBuffer, this.keyLength.toInt32()));
                 try {
-                    console.log("[+] IV: " + Memory.readUtf8String(this.ivBuffer, this.keyLength.toInt32()));   //防止非可见ascii范围
+                    console.log("[+] IV: " + Memory.readUtf8String(this.ivBuffer, this.keyLength.toInt32()));
                 } catch(e) {
                     var ByteArray = Memory.readByteArray(this.ivBuffer, 16);
                     var uint8Array = new Uint8Array(ByteArray);
@@ -218,13 +218,13 @@ Interceptor.attach(Module.findExportByName('libcommonCrypto.dylib', 'CCCrypt'), 
                         str += hextemp + " ";
                     }
 
-                    console.log("[+] IV: " + str);  // 打印hex
+                    console.log("[+] IV: " + str); // 打印hex,非可见ascii范围
                 }
             }
 
             console.log(Memory.readByteArray(this.outBuffer, Memory.readUInt(this.outCountPtr)));
             try {
-               console.log("[+] After Decrypt: " + Memory.readUtf8String(this.outBuffer, Memory.readUInt(this.outCountPtr))); //防止非可见ascii范围
+               console.log("[+] After Decrypt: " + Memory.readUtf8String(this.outBuffer, Memory.readUInt(this.outCountPtr)));
             } catch(e) {
                 // var ByteArray = Memory.readByteArray(this.outBuffer, Memory.readUInt(this.outCountPtr));
                 // var uint8Array = new Uint8Array(ByteArray);
@@ -239,7 +239,7 @@ Interceptor.attach(Module.findExportByName('libcommonCrypto.dylib', 'CCCrypt'), 
                 //         str += hextemp + " ";
                 // }
 
-                // console.log("[+] Before Encrypt: " + str); // 打印hex
+                // console.log("[+] Before Encrypt: " + str);  // 打印hex,非可见ascii范围
             } 
             
             //console.log('\tBacktrace:\n\t' + Thread.backtrace(this.context,Backtracer.ACCURATE).map(DebugSymbol.fromAddress).join('\n\t'));
