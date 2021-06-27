@@ -1,3 +1,22 @@
+// color着色
+var Color = {
+    RESET: "\x1b[39;49;00m", Black: "0;01", Blue: "4;01", Cyan: "6;01", Gray: "7;01", Green: "2;01", Purple: "5;01", Red: "1;01", Yellow: "3;01",
+    Light: {
+        Black: "0;11", Blue: "4;11", Cyan: "6;11", Gray: "7;01", Green: "2;11", Purple: "5;11", Red: "1;11", Yellow: "3;11"
+    }
+};
+
+var LOG = function (input, kwargs) {
+    kwargs = kwargs || {};
+    var logLevel = kwargs['l'] || 'log', colorPrefix = '\x1b[3', colorSuffix = 'm';
+    if (typeof input === 'object')
+        input = JSON.stringify(input, null, kwargs['i'] ? 2 : null);
+    if (kwargs['c'])
+        input = colorPrefix + kwargs['c'] + colorSuffix + input + Color.RESET;
+    console[logLevel](input);
+};
+
+
 function base64encode(str) {
 	var base64EncodeChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
     var out, i, len;
@@ -81,7 +100,8 @@ Interceptor.attach(Module.findExportByName('libcommonCrypto.dylib', 'CCCrypt'), 
 
             console.log(Memory.readByteArray(this.inBuffer, this.inLength.toInt32()));
             try {
-                console.log("[+] Before Encrypt: " + Memory.readUtf8String(this.inBuffer, this.inLength.toInt32()));
+                // console.log("[+] Before Encrypt: " + Memory.readUtf8String(this.inBuffer, this.inLength.toInt32()));
+                LOG("[+] Before Encrypt: " + Memory.readUtf8String(this.inBuffer, this.inLength.toInt32()), { c: Color.Gray }); 
             } catch(e) {
                 // var ByteArray = Memory.readByteArray(this.inBuffer, this.inLength.toInt32());
                 // var uint8Array = new Uint8Array(ByteArray);
@@ -104,7 +124,8 @@ Interceptor.attach(Module.findExportByName('libcommonCrypto.dylib', 'CCCrypt'), 
             if (this.keyLength.toInt32() == 24) {console.log("[+] KEY Length --> 192");}
             if (this.keyLength.toInt32() == 32) {console.log("[+] KEY Length --> 256");}
             try {
-                console.log("[+] KEY: " + Memory.readUtf8String(this.keyBytes, this.keyLength.toInt32()));
+                // console.log("[+] KEY: " + Memory.readUtf8String(this.keyBytes, this.keyLength.toInt32()));
+                LOG("[+] KEY: " + Memory.readUtf8String(this.keyBytes, this.keyLength.toInt32()), { c: Color.Gray }); 
             } catch(e) {
                 var ByteArray = Memory.readByteArray(this.keyBytes, this.keyLength.toInt32());
                 var uint8Array = new Uint8Array(ByteArray);
@@ -119,13 +140,15 @@ Interceptor.attach(Module.findExportByName('libcommonCrypto.dylib', 'CCCrypt'), 
                         str += hextemp + " ";
                 }
 
-                console.log("[+] KEY: " + str); // 打印hex,非可见ascii范围
+                // console.log("[+] KEY: " + str); // 打印hex,非可见ascii范围
+                LOG("[+] KEY: " + str, { c: Color.Gray }); 
             }     
 
             if (this.CCOptions == 0x0 || this.CCOptions == 0x1) {
                 console.log(Memory.readByteArray(this.ivBuffer, this.keyLength.toInt32()));
                 try {
-                    console.log("[+] IV: " + Memory.readUtf8String(this.ivBuffer, this.keyLength.toInt32()));
+                    // console.log("[+] IV: " + Memory.readUtf8String(this.ivBuffer, this.keyLength.toInt32()));
+                    LOG("[+] IV: " + Memory.readUtf8String(this.ivBuffer, this.keyLength.toInt32()), { c: Color.Gray }); 
                 } catch(e) {
                     var ByteArray = Memory.readByteArray(this.ivBuffer, 16);
                     var uint8Array = new Uint8Array(ByteArray);
@@ -139,13 +162,15 @@ Interceptor.attach(Module.findExportByName('libcommonCrypto.dylib', 'CCCrypt'), 
                         str += hextemp + " ";
                     }
 
-                    console.log("[+] IV: " + str); // 打印hex,非可见ascii范围
+                    // console.log("[+] IV: " + str); // 打印hex,非可见ascii范围
+                    LOG("[+] IV: " + str, { c: Color.Gray }); 
                 }
             }
              
             // console.log(Memory.readByteArray(this.outBuffer, Memory.readUInt(this.outCountPtr))); // 打印hex,非可见ascii范围
             var array = new Uint8Array(Memory.readByteArray(this.outBuffer, Memory.readUInt(this.outCountPtr)));
-            console.log("[+] After Encrypt: " + base64encode(bin2string(array)));
+            // console.log("[+] After Encrypt: " + base64encode(bin2string(array)));
+            LOG("[+] After Encrypt: " + base64encode(bin2string(array)), { c: Color.Gray }); 
 
             //console.log('\tBacktrace:\n\t' + Thread.backtrace(this.context,Backtracer.ACCURATE).map(DebugSymbol.fromAddress).join('\n\t'));
             console.log("--------------------------------------------------------------\n");
@@ -176,14 +201,16 @@ Interceptor.attach(Module.findExportByName('libcommonCrypto.dylib', 'CCCrypt'), 
             // if (this.CCOptions != 0x1 && this.CCOptions != 0x3) {console.log("[+] CCOptions: " + this.CCOptions);}
 
             var array = new Uint8Array(Memory.readByteArray(this.inBuffer, this.inLength.toInt32()));
-            console.log("[+] Before Decrypt: " + base64encode(bin2string(array)));
+            // console.log("[+] Before Decrypt: " + base64encode(bin2string(array)));
+            LOG("[+] Before Decrypt: " + base64encode(bin2string(array)), { c: Color.Gray }); 
             
             console.log(Memory.readByteArray(this.keyBytes, this.keyLength.toInt32()));
             if (this.keyLength.toInt32() == 16) {console.log("[+] KEY Length --> 128");}
             if (this.keyLength.toInt32() == 24) {console.log("[+] KEY Length --> 192");}
             if (this.keyLength.toInt32() == 32) {console.log("[+] KEY Length --> 256");}
             try {
-                console.log("[+] KEY: " + Memory.readUtf8String(this.keyBytes, this.keyLength.toInt32()));
+                // console.log("[+] KEY: " + Memory.readUtf8String(this.keyBytes, this.keyLength.toInt32()));
+                LOG("[+] KEY: " + Memory.readUtf8String(this.keyBytes, this.keyLength.toInt32()), { c: Color.Gray }); 
             } catch(e) {
                 var ByteArray = Memory.readByteArray(this.keyBytes, this.keyLength.toInt32());
                 var uint8Array = new Uint8Array(ByteArray);
@@ -198,13 +225,15 @@ Interceptor.attach(Module.findExportByName('libcommonCrypto.dylib', 'CCCrypt'), 
                     str += hextemp + " ";
                 }
 
-                console.log("[+] KEY: " + str); // 打印hex,非可见ascii范围
+                // console.log("[+] KEY: " + str); // 打印hex,非可见ascii范围
+                LOG("[+] KEY: " + str, { c: Color.Gray }); 
             }     
 
             if (this.CCOptions == 0x0 || this.CCOptions == 0x1) {
                 console.log(Memory.readByteArray(this.ivBuffer, this.keyLength.toInt32()));
                 try {
-                    console.log("[+] IV: " + Memory.readUtf8String(this.ivBuffer, this.keyLength.toInt32()));
+                    // console.log("[+] IV: " + Memory.readUtf8String(this.ivBuffer, this.keyLength.toInt32()));
+                    LOG("[+] IV: " + Memory.readUtf8String(this.ivBuffer, this.keyLength.toInt32()), { c: Color.Gray }); 
                 } catch(e) {
                     var ByteArray = Memory.readByteArray(this.ivBuffer, 16);
                     var uint8Array = new Uint8Array(ByteArray);
@@ -218,13 +247,15 @@ Interceptor.attach(Module.findExportByName('libcommonCrypto.dylib', 'CCCrypt'), 
                         str += hextemp + " ";
                     }
 
-                    console.log("[+] IV: " + str); // 打印hex,非可见ascii范围
+                    // console.log("[+] IV: " + str); // 打印hex,非可见ascii范围
+                    LOG("[+] IV: " + str, { c: Color.Gray }); 
                 }
             }
 
             console.log(Memory.readByteArray(this.outBuffer, Memory.readUInt(this.outCountPtr)));
             try {
-               console.log("[+] After Decrypt: " + Memory.readUtf8String(this.outBuffer, Memory.readUInt(this.outCountPtr)));
+               // console.log("[+] After Decrypt: " + Memory.readUtf8String(this.outBuffer, Memory.readUInt(this.outCountPtr)));
+               LOG("[+] After Decrypt: " + Memory.readUtf8String(this.outBuffer, Memory.readUInt(this.outCountPtr)), { c: Color.Gray });
             } catch(e) {
                 // var ByteArray = Memory.readByteArray(this.outBuffer, Memory.readUInt(this.outCountPtr));
                 // var uint8Array = new Uint8Array(ByteArray);
