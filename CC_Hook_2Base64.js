@@ -145,10 +145,10 @@ Interceptor.attach(Module.findExportByName('libcommonCrypto.dylib', 'CCCrypt'), 
             }     
 
             if (this.CCOptions == 0x0 || this.CCOptions == 0x1) {
-                console.log(Memory.readByteArray(this.ivBuffer, this.keyLength.toInt32()));
+                console.log(Memory.readByteArray(this.ivBuffer, 16));
                 try {
                     // console.log("[+] IV: " + Memory.readUtf8String(this.ivBuffer, this.keyLength.toInt32()));
-                    LOG("[+] IV: " + Memory.readUtf8String(this.ivBuffer, this.keyLength.toInt32()), { c: Color.Gray }); 
+                    LOG("[+] IV: " + Memory.readUtf8String(this.ivBuffer, 16), { c: Color.Gray }); 
                 } catch(e) {
                     var ByteArray = Memory.readByteArray(this.ivBuffer, 16);
                     var uint8Array = new Uint8Array(ByteArray);
@@ -230,10 +230,10 @@ Interceptor.attach(Module.findExportByName('libcommonCrypto.dylib', 'CCCrypt'), 
             }     
 
             if (this.CCOptions == 0x0 || this.CCOptions == 0x1) {
-                console.log(Memory.readByteArray(this.ivBuffer, this.keyLength.toInt32()));
+                console.log(Memory.readByteArray(this.ivBuffer, 16));
                 try {
                     // console.log("[+] IV: " + Memory.readUtf8String(this.ivBuffer, this.keyLength.toInt32()));
-                    LOG("[+] IV: " + Memory.readUtf8String(this.ivBuffer, this.keyLength.toInt32()), { c: Color.Gray }); 
+                    LOG("[+] IV: " + Memory.readUtf8String(this.ivBuffer, 16), { c: Color.Gray }); 
                 } catch(e) {
                     var ByteArray = Memory.readByteArray(this.ivBuffer, 16);
                     var uint8Array = new Uint8Array(ByteArray);
