@@ -108,8 +108,8 @@ function traceObjC(impl, name) {
             //console.log("*** entered " + name);
 
             // print full backtrace
-            // console.log("\nBacktrace:\n" + Thread.backtrace(this.context, Backtracer.ACCURATE).map(DebugSymbol.fromAddress).join("\n"));
-            // console.log("\nBacktrace:\n" + Thread.backtrace(this.context, Backtracer.FUZZY).map(DebugSymbol.fromAddress).join("\n"));
+            // console.log('\tBacktrace:\n\t' + Thread.backtrace(this.context,Backtracer.ACCURATE).map(DebugSymbol.fromAddress).join('\n\t'));
+            // console.log('\tBacktrace:\n\t' + Thread.backtrace(this.context,Backtracer.FUZZY).map(DebugSymbol.fromAddress).join('\n\t'));
 
             // print caller
             //console.log("[+] Caller: " + DebugSymbol.fromAddress(this.returnAddress));
