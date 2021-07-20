@@ -73,13 +73,16 @@ Interceptor.attach(Module.findExportByName('libcommonCrypto.dylib', 'CCCrypt'), 
         this.outBuffer   = args[8]
         this.outLength   = args[9]
         this.outCountPtr = args[10]
+        console.log("[+] --------------------------------------------------------------");
+        // 不要在onLeave回溯堆栈，会产生误报！
+        console.log('\tACCURATE Backtrace:\n\t' + Thread.backtrace(this.context,Backtracer.ACCURATE).map(DebugSymbol.fromAddress).join('\n\t'));
+        // console.log('\tFUZZY Backtrace:\n\t' + Thread.backtrace(this.context,Backtracer.FUZZY).map(DebugSymbol.fromAddress).join('\n\t'));
 
     },
 
     onLeave: function (retVal) {
         if (this.operation == 0) {
              // Show the buffers here if this an encryption operation
-            console.log("--------------------------------------------------------------");
 
             // console.log("[+] CCAlgorithm: " + this.CCAlgorithm);
             if (this.CCAlgorithm == 0x0) {console.log("[+] CCAlgorithm: " + this.CCAlgorithm + " --> AES Encrypt");}
@@ -170,15 +173,13 @@ Interceptor.attach(Module.findExportByName('libcommonCrypto.dylib', 'CCCrypt'), 
             // console.log(Memory.readByteArray(this.outBuffer, Memory.readUInt(this.outCountPtr))); // 打印hex,非可见ascii范围
             var array = new Uint8Array(Memory.readByteArray(this.outBuffer, Memory.readUInt(this.outCountPtr)));
             // console.log("[+] After Encrypt: " + base64encode(bin2string(array)));
-            LOG("[+] After Encrypt: " + base64encode(bin2string(array)), { c: Color.Gray }); 
+            LOG("[+] After Encrypt: " + base64encode(bin2string(array)), { c: Color.Gray });
 
-            //console.log('\tBacktrace:\n\t' + Thread.backtrace(this.context,Backtracer.ACCURATE).map(DebugSymbol.fromAddress).join('\n\t'));
-            console.log("--------------------------------------------------------------\n");
+            console.log("[-] --------------------------------------------------------------\n");
         }
 
         if (this.operation == 1) {
             // Show the buffers here if this a decryption operation
-            console.log("--------------------------------------------------------------");
 
             // console.log("inLength: " + this.inLength.toInt32());
             // console.log("outLength: " + this.outLength.toInt32());
@@ -271,10 +272,9 @@ Interceptor.attach(Module.findExportByName('libcommonCrypto.dylib', 'CCCrypt'), 
                 // }
 
                 // console.log("[+] After Decrypt: " + str); // 打印hex,非可见ascii范围
-            } 
-            
-            //console.log('\tBacktrace:\n\t' + Thread.backtrace(this.context,Backtracer.ACCURATE).map(DebugSymbol.fromAddress).join('\n\t'));
-            console.log("--------------------------------------------------------------\n");
+            }
+
+            console.log("[-] --------------------------------------------------------------\n");
         }
     }
 })
