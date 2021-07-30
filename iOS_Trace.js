@@ -34,6 +34,7 @@ function isReadable(p) {
     }
 }
 
+
 // color着色
 var Color = {
     RESET: "\x1b[39;49;00m", Black: "0;01", Blue: "4;01", Cyan: "6;01", Gray: "7;01", Green: "2;01", Purple: "5;01", Red: "1;01", Yellow: "3;01",
@@ -53,6 +54,15 @@ var LOG = function (input, kwargs) {
 };
 
 
+var NSData = ObjC.classes.NSData;
+var NSString = ObjC.classes.NSString;
+
+/* NSData -> NSString */
+function NSData2NSString(NSData) {
+    return ObjC.classes.NSString.alloc().initWithData_encoding_(NSData, 4);
+}
+
+
 // generic trace
 function trace(pattern) {
     var type = (pattern.indexOf(" ") !== -1) ? "objc":"module";
@@ -63,13 +73,9 @@ function trace(pattern) {
     targets.forEach(function(target) {
         if (type === "objc") {
             var filter = [  //过滤条件，方法名称中不含以下关键词
-                "TNTunnel",
                 "SDK",
-                "monitor",
                 "Monitor",
-                "pvWithCommand",
-                "_",
-                "LTMBLSearchRequestBaseBizLogic"
+                "_"
             ];
             for (var i = 0, Traceflag = 0; i < filter.length; i++) {
                 if (target.name.indexOf(filter[i]) != -1) {
@@ -162,6 +168,10 @@ function printArg(desc, arg) {
     try {
         var objcParam = ObjC.Object(arg);
 
+        if(objcParam.$className== "NSConcreteMutableData"){    //将NSConcreteMutableData转化为NSString打印
+            objcParam = NSData2NSString(objcParam);
+        }
+
         if (desc.indexOf("arg") != -1 ) {   //区分参数与返回值着色
             LOG("[+] " + desc + objcParam, { c: Color.Gray }); 
         } else {
@@ -174,7 +184,6 @@ function printArg(desc, arg) {
         console.log(desc + arg);
     }
 }
-
 
 
 // ----------------------usage examples---------------------------
@@ -190,7 +199,6 @@ if (ObjC.available) {
     // trace("*[* *Encrypt*:*]");
     trace("-[NSMutableURLRequest setValue:forHTTPHeaderField:]");
 
-  
 
 } else {
     send("error: Objective-C Runtime is not available!");
