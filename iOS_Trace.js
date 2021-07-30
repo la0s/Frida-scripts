@@ -73,7 +73,7 @@ function trace(pattern) {
 
     targets.forEach(function(target) {
         if (type === "objc") {
-            var filter = [  //过滤条件，方法名称中不含以下关键词
+            var filter = [  // 过滤条件，方法名称中不含以下关键词
                 "SDK",
                 "Monitor",
                 "_"
@@ -85,7 +85,7 @@ function trace(pattern) {
             }
             if (Traceflag === 0) {
                 LOG("Tracing "+ target.name +" "+ target.address, { c: Color.Gray });
-                //console.log("Tracing " + target.name +" "+ target.address);
+                // console.log("Tracing " + target.name +" "+ target.address);
                 traceObjC(target.address, target.name);
             }
         }
@@ -109,24 +109,24 @@ function traceObjC(impl, name) {
     Interceptor.attach(impl, {
         onEnter: function(args) {
             // debug only the intended calls
-            //console.log("Tracing " + name);
+            // console.log("Tracing " + name);
             console.log("[+] ---------------------------------------------------------------");
             LOG("*** entering " + name, { c: Color.Green });
-            //console.log("*** entered " + name);
+            // console.log("*** entered " + name);
 
             // print full backtrace
             // console.log('\tACCURATE Backtrace:\n\t' + Thread.backtrace(this.context,Backtracer.ACCURATE).map(DebugSymbol.fromAddress).join('\n\t'));
             // console.log('\tFUZZY Backtrace:\n\t' + Thread.backtrace(this.context,Backtracer.FUZZY).map(DebugSymbol.fromAddress).join('\n\t'));
 
             // print caller
-            //console.log("[+] Caller: " + DebugSymbol.fromAddress(this.returnAddress));
+            // console.log("[+] Caller: " + DebugSymbol.fromAddress(this.returnAddress));
 
             // print args
-            if (name.indexOf(":") !== -1) {  //有参数的逻辑处理
+            if (name.indexOf(":") !== -1) {  // 有参数的逻辑处理
                 var param = name.split(":");
                 param[0] = param[0].split(" ")[1];
                 for (var i = 0; i < param.length - 1; i++) {
-                    //console.log("[+] args"+"["+ (i+2) +"] objc: " + CheckObjc(args[i + 2]));
+                    // console.log("[+] args"+"["+ (i+2) +"] objc: " + CheckObjc(args[i + 2]));
                     if (CheckObjc(args[i + 2])) {
                         printArg("arg"+(i+2)+" "+ param[i] + ": ", args[i + 2]);
                     }
@@ -136,7 +136,7 @@ function traceObjC(impl, name) {
                     // 无参数的Objective-C方法，打印args[0]
                     var param1 = new ObjC.Object(args[0]);
                     LOG("[+] args[0]: " + param1, { c: Color.Gray });
-                    //console.log("[+] args[0]: " + param1);
+                    // console.log("[+] args[0]: " + param1);
                     console.log("[+] type: " + param1.$className);
                 }
 
@@ -145,14 +145,14 @@ function traceObjC(impl, name) {
                     // 无参数的Objective-C方法，打印args[0]
                     var param1 = new ObjC.Object(args[0]);
                     LOG("[+] args[0]: " + param1, { c: Color.Gray });
-                    //console.log("[+] args[0]: " + param1);
+                    // console.log("[+] args[0]: " + param1);
                     console.log("[+] type: " + param1.$className);
                 }
             }
         },
 
         onLeave: function(retval) {
-            //console.log("[+] retval objc: " + CheckObjc(retval));
+            // console.log("[+] retval objc: " + CheckObjc(retval));
             if (CheckObjc(retval)) {
                 printArg("retval: ", retval);
             }
@@ -174,17 +174,21 @@ function printArg(desc, arg) {
         // ==>
         // [+] arg3: 77A102B2-276F-4542-8F33-0DF84340C11C
         // [+] type: __NSCFString
-        if (objcParam.$className == "NSConcreteMutableData") {    //将NSConcreteMutableData等类型转化为NSString打印
-            objcParam = NSData2NSString(objcParam);
+        if (objcParam.$className == "NSConcreteMutableData") {    // 将NSConcreteMutableData等类型转化为NSString打印
+            try {
+                objcParam = NSData2NSString(objcParam);
+            } catch(e){
+                objcParam = objcParam.ck.CKHexString();     // 非可见字符, 打印hex
+            }
         }
 
-        if (desc.indexOf("arg") != -1 ) {   //区分参数与返回值着色
+        if (desc.indexOf("arg") != -1 ) {   // 区分参数与返回值着色
             LOG("[+] " + desc + objcParam, { c: Color.Gray }); 
         } else {
             LOG("[+] " + desc + objcParam, { c: Color.Cyan });
         }
 
-        //console.log("[+] " + desc + objcParam);
+        // console.log("[+] " + desc + objcParam);
         console.log("[+] type: " + objcParam.$className);
     } catch(err) {
         console.log(desc + arg);
