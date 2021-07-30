@@ -176,7 +176,7 @@ function printArg(desc, arg) {
         // [+] type: __NSCFString
         // if (objcParam.$className == "NSConcreteMutableData") {    // 将NSConcreteMutableData等类型转化为NSString打印
         //     try {
-        //         // objcParam = NSData2NSString(objcParam);
+        //         // objcParam = NSData2NSString(objcParam);  // 非可见字符不会报异常
         //         objcParam = objcParam.bytes().readUtf8String(objcParam.length());
         //     } catch(e){
         //         objcParam = objcParam.CKHexString();     // 非可见字符, 打印hex
