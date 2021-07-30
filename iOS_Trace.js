@@ -55,13 +55,13 @@ var LOG = function (input, kwargs) {
 
 
 // https://codeshare.frida.re/@lichao890427/ios-utils/
-var NSData = ObjC.classes.NSData;
-var NSString = ObjC.classes.NSString;
+// var NSData = ObjC.classes.NSData;
+// var NSString = ObjC.classes.NSString;
 
-/* NSData -> NSString */
-function NSData2NSString(NSData) {
-    return ObjC.classes.NSString.alloc().initWithData_encoding_(NSData, 4);
-}
+// /* NSData -> NSString */
+// function NSData2NSString(NSData) {
+//     return ObjC.classes.NSString.alloc().initWithData_encoding_(NSData, 4);
+// }
 
 
 // generic trace
@@ -174,13 +174,14 @@ function printArg(desc, arg) {
         // ==>
         // [+] arg3: 77A102B2-276F-4542-8F33-0DF84340C11C
         // [+] type: __NSCFString
-        if (objcParam.$className == "NSConcreteMutableData") {    // 将NSConcreteMutableData等类型转化为NSString打印
-            try {
-                objcParam = NSData2NSString(objcParam);
-            } catch(e){
-                objcParam = objcParam.ck.CKHexString();     // 非可见字符, 打印hex
-            }
-        }
+        // if (objcParam.$className == "NSConcreteMutableData") {    // 将NSConcreteMutableData等类型转化为NSString打印
+        //     try {
+        //         // objcParam = NSData2NSString(objcParam);
+        //         objcParam = objcParam.bytes().readUtf8String(objcParam.length());
+        //     } catch(e){
+        //         objcParam = objcParam.CKHexString();     // 非可见字符, 打印hex
+        //     }
+        // }
 
         if (desc.indexOf("arg") != -1 ) {   // 区分参数与返回值着色
             LOG("[+] " + desc + objcParam, { c: Color.Gray }); 
