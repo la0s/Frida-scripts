@@ -54,6 +54,7 @@ var LOG = function (input, kwargs) {
 };
 
 
+// https://codeshare.frida.re/@lichao890427/ios-utils/
 var NSData = ObjC.classes.NSData;
 var NSString = ObjC.classes.NSString;
 
@@ -168,7 +169,12 @@ function printArg(desc, arg) {
     try {
         var objcParam = ObjC.Object(arg);
 
-        if(objcParam.$className== "NSConcreteMutableData"){    //将NSConcreteMutableData转化为NSString打印
+        // [+] arg3: {length = 36, bytes = 0x37374131 30324232 2d323736 462d3435 ... 34333430 43313143 }
+        // [+] type: NSConcreteMutableData
+        // ==>
+        // [+] arg3: 77A102B2-276F-4542-8F33-0DF84340C11C
+        // [+] type: __NSCFString
+        if (objcParam.$className == "NSConcreteMutableData") {    //将NSConcreteMutableData等类型转化为NSString打印
             objcParam = NSData2NSString(objcParam);
         }
 
