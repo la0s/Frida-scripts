@@ -168,6 +168,7 @@ function traceObjC(impl, name) {
 function printArg(desc, arg) {
     try {
         var objcParam = ObjC.Object(arg);
+        var objcType = objcParam.$className;
 
         // [+] arg3: {length = 36, bytes = 0x37374131 30324232 2d323736 462d3435 ... 34333430 43313143 }
         // [+] type: NSConcreteMutableData
@@ -188,9 +189,9 @@ function printArg(desc, arg) {
         } else {
             LOG("[+] " + desc + objcParam, { c: Color.Cyan });
         }
-
         // console.log("[+] " + desc + objcParam);
-        console.log("[+] type: " + objcParam.$className);
+
+        console.log("[+] type: " + objcType);
     } catch(err) {
         console.log(desc + arg);
     }
