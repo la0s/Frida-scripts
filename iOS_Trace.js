@@ -175,7 +175,7 @@ function printArg(desc, arg) {
         // ==>
         // [+] arg3: 77A102B2-276F-4542-8F33-0DF84340C11C
         // [+] type: __NSCFString
-        // if (objcParam.$className == "NSConcreteMutableData") {    // 将NSConcreteMutableData等类型转化为NSString打印
+        // if (objcParam.$className == "NSConcreteMutableData" || objcParam.$className == "_NSInlineData") {    // 将NSConcreteMutableData等类型转化为NSString打印
         //     try {
         //         // objcParam = NSData2NSString(objcParam);  // 非可见字符不会报异常
         //         objcParam = objcParam.bytes().readUtf8String(objcParam.length());
