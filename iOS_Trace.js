@@ -73,7 +73,7 @@ function trace(pattern) {
 
     targets.forEach(function(target) {
         if (type === "objc") {
-            var filter = [  // 过滤条件，方法名称中不含以下关键词
+            var filter = [  // 自定义过滤条件，方法名称中不含以下关键词
                 "SDK",
                 "Monitor",
                 "_"
