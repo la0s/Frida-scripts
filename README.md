@@ -18,3 +18,10 @@
 #### 举例
 **拦截CCCrypt加密过程**
 ![](./Images/CC_Hook_2Base64.png)
+
+### CC_MD5.js
+#### 说明
+* 对CC_MD5函数进行拦截  
+#### 举例
+**拦截某应用MD5加密结果**
+![](./Images/CC_MD5.png)
