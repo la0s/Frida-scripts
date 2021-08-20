@@ -26,9 +26,9 @@
 **拦截某应用MD5加密结果**
 ![](./Images/CC_MD5.png)
 
-### CC_SHA1.js CCHmac.js
+### CC_SHA1.js  CCHmac.js
 #### 说明
-* 对CC_SHA1，CCHmac函数进行拦截。
+* 对CC_SHA1  CCHmac函数进行拦截。
 #### 举例
 **拦截某应用Hmac加密过程及密钥**
 ![](./Images/CCHmac.png)
