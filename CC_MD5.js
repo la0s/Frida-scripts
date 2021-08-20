@@ -43,17 +43,17 @@ Interceptor.attach(Module.findExportByName('libcommonCrypto.dylib', 'CC_MD5'), {
     },
   
     onLeave: function(retval) {
-        // console.log(hexdump(ArgPtr, {
-        //     length: 32,
-        //     header: true,
-        //     ansi: true
-        // }))
+        console.log(hexdump(ArgPtr, {
+            length: 32,
+            header: true,
+            ansi: true
+        }))
 
-        //  console.log(hexdump(retval, {
-        //     length: 32,
-        //     header: true,
-        //     ansi: true
-        // }))
+         console.log(hexdump(retval, {
+            length: 32,
+            header: true,
+            ansi: true
+        }))
 
         var ByteArray = Memory.readByteArray(ArgPtr, 16);
         var uint8Array = new Uint8Array(ByteArray);
