@@ -65,6 +65,9 @@ Interceptor.attach(Module.findExportByName('libcommonCrypto.dylib', 'CC_MD5'), {
         var str = "";
         for(var i = 0; i < uint8Array.length; i++) {
             var hextemp = (uint8Array[i].toString(16))
+            if(hextemp.length == 1){
+                hextemp = "0" + hextemp
+            }
             str += hextemp;
         }
         LOG("[+] MD5 Hash: " + str, { c: Color.Cyan });
