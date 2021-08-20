@@ -28,6 +28,7 @@ var LOG = function (input, kwargs) {
 var ArgPtr = null;
 Interceptor.attach(Module.findExportByName('libcommonCrypto.dylib', 'CC_MD5'), {
     onEnter: function(args) {
+        console.log("[+] --------------------------------------------------------------");
         try {
             LOG("[+] args[0]: " + Memory.readUtf8String(args[0], args[1].toInt32()), { c: Color.Gray });
         } catch(e) {
@@ -43,6 +44,7 @@ Interceptor.attach(Module.findExportByName('libcommonCrypto.dylib', 'CC_MD5'), {
     },
   
     onLeave: function(retval) {
+        // retval == args[2]
         console.log(hexdump(ArgPtr, {
             length: 32,
             header: true,
@@ -63,6 +65,7 @@ Interceptor.attach(Module.findExportByName('libcommonCrypto.dylib', 'CC_MD5'), {
             var hextemp = (uint8Array[i].toString(16))
             str += hextemp;
         }
-        LOG("[+] MD5 Hash: " + str, { c: Color.Cyan }); 
+        LOG("[+] MD5 Hash: " + str, { c: Color.Cyan });
+        console.log("[-] --------------------------------------------------------------\n");
     }
 });
