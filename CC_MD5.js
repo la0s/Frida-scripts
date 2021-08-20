@@ -17,14 +17,16 @@ var LOG = function (input, kwargs) {
 };
 
 
-// [+] args[0]: MGCopyAnswerInternalBuild
+// [+] --------------------------------------------------------------
+// [+] args[0]: 067647E3-757D-46D2-A4E8-43FE592FE0510cb2f3c73b7ba030fcd7170f9cbf92055483c392
 //             0  1  2  3  4  5  6  7  8  9  A  B  C  D  E  F  0123456789ABCDEF
-// 16b364020  2c 12 5f c0 e1 33 13 14 71 ce 50 27 4a e2 3b 7a  ,._..3..q.P'J.;z
-// 16b364030  b0 52 40 0d 01 00 00 00 4c 00 7a 02 f1 9b 0b 83  .R@.....L.z.....
+// 16d982538  f1 ca 1c 38 14 76 7d 37 b8 44 53 e2 f4 a7 55 f9  ...8.v}7.DS...U.
+// 16d982548  61 00 ca c4 e4 ae 9a 60 c0 c3 d0 83 02 00 00 00  a......`........
 //             0  1  2  3  4  5  6  7  8  9  A  B  C  D  E  F  0123456789ABCDEF
-// 16b364020  2c 12 5f c0 e1 33 13 14 71 ce 50 27 4a e2 3b 7a  ,._..3..q.P'J.;z
-// 16b364030  b0 52 40 0d 01 00 00 00 4c 00 7a 02 f1 9b 0b 83  .R@.....L.z.....
-// [+] MD5 Hash: 2c125fc0e133131471ce50274ae23b7a
+// 16d982538  f1 ca 1c 38 14 76 7d 37 b8 44 53 e2 f4 a7 55 f9  ...8.v}7.DS...U.
+// 16d982548  61 00 ca c4 e4 ae 9a 60 c0 c3 d0 83 02 00 00 00  a......`........
+// [+] MD5 Hash: f1ca1c3814767d37b84453e2f4a755f9
+// [-] --------------------------------------------------------------
 var ArgPtr = null;
 Interceptor.attach(Module.findExportByName('libcommonCrypto.dylib', 'CC_MD5'), {
     onEnter: function(args) {
