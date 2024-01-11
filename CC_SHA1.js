@@ -29,23 +29,23 @@ var LOG = function (input, kwargs) {
 // [-] --------------------------------------------------------------
 var ArgPtr = null;
 Interceptor.attach(Module.findExportByName('libcommonCrypto.dylib', 'CC_SHA512'), {   //CC_SHA1 CC_SHA256 CC_SHA512
-    onEnter: function(args) {
+    onEnter: function (args) {
         console.log("[+] --------------------------------------------------------------");
         try {
             LOG("[+] args[0]: " + Memory.readUtf8String(args[0], args[1].toInt32()), { c: Color.Gray });
-        } catch(e) {
+        } catch (e) {
             console.log(hexdump(args[0], {
                 length: args[1].toInt32(),
                 header: true,
                 ansi: true
             }))
-        }  
+        }
 
         ArgPtr = args[2];
         // console.log('\tACCURATE Backtrace:\n\t' + Thread.backtrace(this.context,Backtracer.ACCURATE).map(DebugSymbol.fromAddress).join('\n\t'));
     },
-  
-    onLeave: function(retval) {
+
+    onLeave: function (retval) {
         // retval == args[2]
         console.log(hexdump(ArgPtr, {
             length: 32,
@@ -53,7 +53,7 @@ Interceptor.attach(Module.findExportByName('libcommonCrypto.dylib', 'CC_SHA512')
             ansi: true
         }))
 
-         console.log(hexdump(retval, {
+        console.log(hexdump(retval, {
             length: 32,
             header: true,
             ansi: true
@@ -63,9 +63,9 @@ Interceptor.attach(Module.findExportByName('libcommonCrypto.dylib', 'CC_SHA512')
         var uint8Array = new Uint8Array(ByteArray);
 
         var str = "";
-        for(var i = 0; i < uint8Array.length; i++) {
+        for (var i = 0; i < uint8Array.length; i++) {
             var hextemp = (uint8Array[i].toString(16))
-            if(hextemp.length == 1){
+            if (hextemp.length == 1) {
                 hextemp = "0" + hextemp
             }
             str += hextemp;

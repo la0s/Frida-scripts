@@ -30,15 +30,15 @@ var ArgPtr = null;
 var AlgorithmCount;
 // void CCHmac(CCHmacAlgorithm algorithm, const void *key, size_t keyLength, const void *data, size_t dataLength, void *macOut);
 Interceptor.attach(Module.findExportByName('libcommonCrypto.dylib', 'CCHmac'), {
-    onEnter: function(args) {
+    onEnter: function (args) {
         console.log("[+] --------------------------------------------------------------");
         // LOG("[+] args[0]: " + args[0], { c: Color.Gray });
-        if (args[0] == 0x0) {console.log("[+] CCHmacAlgorithm: " + args[0] + " --> kCCHmacAlgSHA1");   AlgorithmCount = 40;}
-        if (args[0] == 0x1) {console.log("[+] CCHmacAlgorithm: " + args[0] + " --> kCCHmacAlgMD5");    AlgorithmCount = 32;}
-        if (args[0] == 0x2) {console.log("[+] CCHmacAlgorithm: " + args[0] + " --> kCCHmacAlgSHA256"); AlgorithmCount = 64;}
+        if (args[0] == 0x0) { console.log("[+] CCHmacAlgorithm: " + args[0] + " --> kCCHmacAlgSHA1"); AlgorithmCount = 40; }
+        if (args[0] == 0x1) { console.log("[+] CCHmacAlgorithm: " + args[0] + " --> kCCHmacAlgMD5"); AlgorithmCount = 32; }
+        if (args[0] == 0x2) { console.log("[+] CCHmacAlgorithm: " + args[0] + " --> kCCHmacAlgSHA256"); AlgorithmCount = 64; }
         try {
             LOG("[+] key: " + Memory.readUtf8String(args[1], args[2].toInt32()), { c: Color.Gray });
-        } catch(e) {
+        } catch (e) {
             console.log(hexdump(args[1], {
                 length: args[2].toInt32(),  // keyLength
                 header: true,
@@ -48,7 +48,7 @@ Interceptor.attach(Module.findExportByName('libcommonCrypto.dylib', 'CCHmac'), {
 
         try {
             LOG("[+] data: " + Memory.readUtf8String(args[3], args[4].toInt32()), { c: Color.Gray });
-        } catch(e) {
+        } catch (e) {
             console.log(hexdump(args[3], {
                 length: args[4].toInt32(),  // dataLength
                 header: true,
@@ -59,8 +59,8 @@ Interceptor.attach(Module.findExportByName('libcommonCrypto.dylib', 'CCHmac'), {
         ArgPtr = args[5];
         // console.log('\tACCURATE Backtrace:\n\t' + Thread.backtrace(this.context,Backtracer.ACCURATE).map(DebugSymbol.fromAddress).join('\n\t'));
     },
-  
-    onLeave: function(retval) {
+
+    onLeave: function (retval) {
         // retval == args[2]
         console.log(hexdump(ArgPtr, {
             length: AlgorithmCount / 2,
@@ -72,9 +72,9 @@ Interceptor.attach(Module.findExportByName('libcommonCrypto.dylib', 'CCHmac'), {
         var uint8Array = new Uint8Array(ByteArray);
 
         var str = "";
-        for(var i = 0; i < uint8Array.length; i++) {
+        for (var i = 0; i < uint8Array.length; i++) {
             var hextemp = (uint8Array[i].toString(16))
-            if(hextemp.length == 1){
+            if (hextemp.length == 1) {
                 hextemp = "0" + hextemp
             }
             str += hextemp;

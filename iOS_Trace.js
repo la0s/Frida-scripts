@@ -2,7 +2,7 @@
 // 参考https://codeshare.frida.re/@mrmacete/objc-method-observer/
 function CheckObjc(p) {
     var klass = getObjCClassPtr(p);
-    return ! klass.isNull();
+    return !klass.isNull();
 }
 
 function getObjCClassPtr(p) {
@@ -20,7 +20,7 @@ function getObjCClassPtr(p) {
     var classP = isa;
     if (classP.and(ISA_MAGIC_MASK).equals(ISA_MAGIC_VALUE))
         classP = isa.and(ISA_MASK);
-    if (isReadable(classP)) 
+    if (isReadable(classP))
         return classP;
     return NULL;
 }
@@ -29,7 +29,7 @@ function isReadable(p) {
     try {
         p.readU8();
         return true;
-    } catch(e) {
+    } catch (e) {
         return false;
     }
 }
@@ -66,12 +66,12 @@ var LOG = function (input, kwargs) {
 
 // generic trace
 function trace(pattern) {
-    var type = (pattern.indexOf(" ") !== -1) ? "objc":"module";
+    var type = (pattern.indexOf(" ") !== -1) ? "objc" : "module";
     var res = new ApiResolver(type);
     var matches = res.enumerateMatchesSync(pattern);
     var targets = uniqBy(matches, JSON.stringify);
 
-    targets.forEach(function(target) {
+    targets.forEach(function (target) {
         if (type === "objc") {
             var filter = [  // 自定义过滤条件，方法名称中不含以下关键词
                 "SDK",
@@ -80,11 +80,11 @@ function trace(pattern) {
             ];
             for (var i = 0, Traceflag = 0; i < filter.length; i++) {
                 if (target.name.indexOf(filter[i]) != -1) {
-                   Traceflag = 1;
+                    Traceflag = 1;
                 }
             }
             if (Traceflag === 0) {
-                LOG("Tracing "+ target.name +" "+ target.address, { c: Color.Gray });
+                LOG("Tracing " + target.name + " " + target.address, { c: Color.Gray });
                 // console.log("Tracing " + target.name +" "+ target.address);
                 traceObjC(target.address, target.name);
             }
@@ -98,16 +98,16 @@ function trace(pattern) {
 // remove duplicates from array
 function uniqBy(array, key) {
     var seen = {};
-    return array.filter(function(item) {
+    return array.filter(function (item) {
         var k = key(item);
-        return seen.hasOwnProperty(k) ? false: (seen[k] = true);
+        return seen.hasOwnProperty(k) ? false : (seen[k] = true);
     });
 }
 
 // trace ObjC methods
 function traceObjC(impl, name) {
     Interceptor.attach(impl, {
-        onEnter: function(args) {
+        onEnter: function (args) {
             // debug only the intended calls
             // console.log("Tracing " + name);
             console.log("[+] ---------------------------------------------------------------");
@@ -128,7 +128,7 @@ function traceObjC(impl, name) {
                 for (var i = 0; i < param.length - 1; i++) {
                     // console.log("[+] args"+"["+ (i+2) +"] objc: " + CheckObjc(args[i + 2]));
                     if (CheckObjc(args[i + 2])) {
-                        printArg("arg"+(i+2)+" "+ param[i] + ": ", args[i + 2]);
+                        printArg("arg" + (i + 2) + " " + param[i] + ": ", args[i + 2]);
                     }
                 }
                 // 防止遗漏Receiver对象
@@ -151,7 +151,7 @@ function traceObjC(impl, name) {
             }
         },
 
-        onLeave: function(retval) {
+        onLeave: function (retval) {
             // console.log("[+] retval objc: " + CheckObjc(retval));
             if (CheckObjc(retval)) {
                 printArg("retval: ", retval);
@@ -184,15 +184,15 @@ function printArg(desc, arg) {
         //     }
         // }
 
-        if (desc.indexOf("arg") != -1 ) {   // 区分参数与返回值着色
-            LOG("[+] " + desc + objcParam, { c: Color.Gray }); 
+        if (desc.indexOf("arg") != -1) {   // 区分参数与返回值着色
+            LOG("[+] " + desc + objcParam, { c: Color.Gray });
         } else {
             LOG("[+] " + desc + objcParam, { c: Color.Cyan });
         }
         // console.log("[+] " + desc + objcParam);
 
         console.log("[+] type: " + objcType);
-    } catch(err) {
+    } catch (err) {
         console.log(desc + arg);
     }
 }
