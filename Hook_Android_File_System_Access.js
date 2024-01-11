@@ -22,7 +22,6 @@ Java.perform(function () {
     var TraceFile = {};
     var TraceSysFD = {};
 
-
     // ============= Get classes =============
     var CLASS = {
         File: Java.use("java.io.File"),
@@ -55,7 +54,7 @@ Java.perform(function () {
             CLASS.FileInputStream.read.overload("[B", "int", "int"),
         ],
     };
-    var FileOuputStream = {
+    var FileOutputStream = {
         new: [
             CLASS.FileOutputStream.$init.overload("java.io.File"),
             CLASS.FileOutputStream.$init.overload("java.io.File", "boolean"),
@@ -71,8 +70,7 @@ Java.perform(function () {
     };
 
 
-
-    // ============= Hook implementation ============= 
+    // ============= File类 ============= 
     // CLASS.File.$init.overload("java.lang.String"),
     File.new[1].implementation = function (arg1) {
         console.log("[+] ------------------------------------------------------");
@@ -88,8 +86,8 @@ Java.perform(function () {
     // CLASS.File.$init.overload("java.lang.String", "java.lang.String"),
     File.new[2].implementation = function (arg1, arg2) {
         console.log("[+] ------------------------------------------------------");
-        // prettyLog("[+] [Java.File.read.2] new file: " + arg1 + "/" + arg2);
-        console.log("[+] [Java.File.read.2] new file: " + arg1 + "/" + arg2);
+        // prettyLog("[+] [Java.File.new.2] new file: " + arg1 + "/" + arg2);
+        console.log("[+] [Java.File.new.2] new file: " + arg1 + "/" + arg2);
         var ret = File.new[2].call(this, arg1, arg2);;
         var f = Java.cast(this, CLASS.File);
         TraceFile["f" + this.hashCode()] = arg1 + "/" + arg2;
@@ -97,7 +95,8 @@ Java.perform(function () {
         return ret;
     }
 
-    // =============== File Input Stream ===============
+
+    // =============== FileInputStream类 ===============
     // CLASS.FileOutputStream.$init.overload("java.io.File"),
     FileInputStream.new[0].implementation = function (arg1) {
         console.log("[+] ------------------------------------------------------");
@@ -164,17 +163,16 @@ Java.perform(function () {
     }
 
 
-
-    // // =============== File Output Stream ===============
+    // // =============== FileOutputStream类 ===============
     // // CLASS.FileOutputStream.$init.overload("java.io.File"),
-    // FileOuputStream.new[0].implementation = function (arg1) {
+    // FileOutputStream.new[0].implementation = function (arg1) {
     //     console.log("[+] ------------------------------------------------------");
     //     var file = Java.cast(arg1, CLASS.File);
     //     var fname = TraceFile["f" + file.hashCode()];
     //     if (fname == null)
     //         fname = "[unknow]<File:" + file.hashCode() + ">";
-    //     console.log("[+] [Java.FileOuputStream.new.0] new output stream to file: " + fname);
-    //     var fis = FileOuputStream.new[0].call(this, arg1);
+    //     console.log("[+] [Java.FileOutputStream.new.0] new output stream to file: " + fname);
+    //     var fis = FileOutputStream.new[0].call(this, arg1);
     //     TraceFS["fd" + this.hashCode()] = fname;
     //     var fd = Java.cast(this.getFD(), CLASS.FileDescriptor);
     //     TraceFD["fd" + fd.hashCode()] = fname;
@@ -183,14 +181,14 @@ Java.perform(function () {
     // }
 
     // // CLASS.FileOutputStream.$init.overload("java.io.File", "boolean"),
-    // FileOuputStream.new[1].implementation = function (arg1, arg2) {
+    // FileOutputStream.new[1].implementation = function (arg1, arg2) {
     //     console.log("[+] ------------------------------------------------------");
     //     var file = Java.cast(arg1, CLASS.File);
     //     var fname = TraceFile["f" + file.hashCode()];
     //     if (fname == null)
     //         fname = "[unknow]";
-    //     console.log("[Java.FileOuputStream.new.1] new output stream to file: " + fname + "\n");
-    //     var fis = FileOuputStream.new[1].call(this, arg1, arg2);
+    //     console.log("[Java.FileOutputStream.new.1] new output stream to file: " + fname + "\n");
+    //     var fis = FileOutputStream.new[1].call(this, arg1, arg2);
     //     TraceFS["fd" + this.hashCode()] = fname;
     //     var fd = Java.cast(this.getFD(), CLASS.FileDescriptor);
     //     TraceFD["fd" + fd.hashCode()] = fname;
@@ -199,24 +197,24 @@ Java.perform(function () {
     // }
 
     // // CLASS.FileOutputStream.$init.overload("java.io.FileDescriptor"),
-    // FileOuputStream.new[2].implementation = function (arg1) {
+    // FileOutputStream.new[2].implementation = function (arg1) {
     //     console.log("[+] ------------------------------------------------------");
     //     var fd = Java.cast(arg1, CLASS.FileDescriptor);
     //     var fname = TraceFD["fd" + fd.hashCode()];
     //     if (fname == null)
     //         fname = "[unknow]";
-    //     console.log("[Java.FileOuputStream.new.2] new output stream to FileDescriptor: " + fname + "\n");
-    //     var fis = FileOuputStream.new[2].call(this, arg1)
+    //     console.log("[Java.FileOutputStream.new.2] new output stream to FileDescriptor: " + fname + "\n");
+    //     var fis = FileOutputStream.new[2].call(this, arg1)
     //     TraceFS["fd" + this.hashCode()] = fname;
     //     console.log("[-] ------------------------------------------------------\n");
     //     return fis;
     // }
 
     // // CLASS.FileOutputStream.$init.overload("java.lang.String"),
-    // FileOuputStream.new[3].implementation = function (arg1) {
+    // FileOutputStream.new[3].implementation = function (arg1) {
     //     console.log("[+] ------------------------------------------------------");
-    //     console.log("[+] [Java.FileOuputStream.new.3] new output stream to file: " + arg1);
-    //     var fis = FileOuputStream.new[3].call(this, arg1)
+    //     console.log("[+] [Java.FileOutputStream.new.3] new output stream to file: " + arg1);
+    //     var fis = FileOutputStream.new[3].call(this, arg1)
     //     TraceFS["fd" + this.hashCode()] = arg1;
     //     var fd = Java.cast(this.getFD(), CLASS.FileDescriptor);
     //     TraceFD["fd" + fd.hashCode()] = arg1;
@@ -225,10 +223,10 @@ Java.perform(function () {
     // }
 
     // // CLASS.FileOutputStream.$init.overload("java.lang.String", "boolean")
-    // FileOuputStream.new[4].implementation = function (arg1, arg2) {
+    // FileOutputStream.new[4].implementation = function (arg1, arg2) {
     //     console.log("[+] ------------------------------------------------------");
-    //     console.log("[Java.FileOuputStream.new.4] new output stream to file: " + arg1 + ", bool: " + arg2 + "\n");
-    //     var fis = FileOuputStream.new[4].call(this, arg1, arg2)
+    //     console.log("[Java.FileOutputStream.new.4] new output stream to file: " + arg1 + ", bool: " + arg2 + "\n");
+    //     var fis = FileOutputStream.new[4].call(this, arg1, arg2)
     //     TraceFS["fd" + this.hashCode()] = arg1;
     //     var fd = Java.cast(this.getFD(), CLASS.FileDescriptor);
     //     TraceFD["fd" + fd.hashCode()] = arg1;
@@ -237,7 +235,7 @@ Java.perform(function () {
     // }
 
     // // CLASS.FileOutputStream.write.overload("[B"),
-    // FileOuputStream.write[0].implementation = function (arg1) {
+    // FileOutputStream.write[0].implementation = function (arg1) {
     //     console.log("[+] ------------------------------------------------------");
     //     var fname = TraceFS["fd" + this.hashCode()];
     //     var fd = null;
@@ -247,7 +245,7 @@ Java.perform(function () {
     //     }
     //     if (fname == null)
     //         fname = "[unknow]";
-    //     console.log("[Java.FileOuputStream.write.0] write byte array: " + fname + "\n");
+    //     console.log("[Java.FileOutputStream.write.0] write byte array: " + fname + "\n");
     //     var hexstr = "";
     //     for (var i = 0; i < arg1.length; i++) {
     //         var b = (arg1[i] >>> 0) & 0xff;
@@ -256,11 +254,11 @@ Java.perform(function () {
     //     }
     //     console.log("[+] write bytes: " + hexstr);
     //     console.log("[-] ------------------------------------------------------\n");
-    //     return FileOuputStream.write[0].call(this, arg1);
+    //     return FileOutputStream.write[0].call(this, arg1);
     // }
 
     // // CLASS.FileOutputStream.write.overload("int"),
-    // FileOuputStream.write[1].implementation = function (arg1) {
+    // FileOutputStream.write[1].implementation = function (arg1) {
     //     console.log("[+] ------------------------------------------------------");
     //     var fname = TraceFS["fd" + this.hashCode()];
     //     var fd = null;
@@ -270,13 +268,13 @@ Java.perform(function () {
     //     }
     //     if (fname == null)
     //         fname = "[unknow]";
-    //     console.log("[Java.FileOuputStream.write.1] write int: " + fname + " : " + arg1);
+    //     console.log("[Java.FileOutputStream.write.1] write int: " + fname + " : " + arg1);
     //     console.log("[-] ------------------------------------------------------\n");
-    //     return FileOuputStream.write[1].call(this, arg1);
+    //     return FileOutputStream.write[1].call(this, arg1);
     // }
 
     // // CLASS.FileOutputStream.write.overload("[B", "int", "int"),
-    // FileOuputStream.write[2].implementation = function (arg1, arg2, arg3) {
+    // FileOutputStream.write[2].implementation = function (arg1, arg2, arg3) {
     //     console.log("[+] ------------------------------------------------------");
     //     var fname = TraceFS["fd" + this.hashCode()];
     //     var fd = null;
@@ -286,7 +284,7 @@ Java.perform(function () {
     //         if (fname == null)
     //             fname = "[unknow], fd=" + this.hashCode();
     //     }
-    //     console.log("[Java.FileOuputStream.write.2] write " + arg3 + " bytes from " + arg2 + "  : " + fname + "\n");
+    //     console.log("[Java.FileOutputStream.write.2] write " + arg3 + " bytes from " + arg2 + "  : " + fname + "\n");
     //     var hexstr = "";
     //     for (var i = 0; i < arg1.length; i++) {
     //         var b = (arg1[i] >>> 0) & 0xff;
@@ -295,8 +293,9 @@ Java.perform(function () {
     //     }
     //     console.log("[+] write bytes: " + hexstr);
     //     console.log("[-] ------------------------------------------------------\n");
-    //     return FileOuputStream.write[2].call(this, arg1, arg2, arg3);
+    //     return FileOutputStream.write[2].call(this, arg1, arg2, arg3);
     // }
+
 
     // // native hooks    
     // Interceptor.attach(
@@ -331,7 +330,6 @@ Java.perform(function () {
     // }
     // );
 
-
     // Interceptor.attach(
     //     Module.findExportByName("libc.so", "write"), {
     //     // fd, buff, count
@@ -350,8 +348,7 @@ Java.perform(function () {
     // );
 
 
-
-    // =============== helper functions ===============
+    // // =============== helper functions ===============
     // function prettyLog(str) {
     //     console.log("------------------------------------------------------\n" + str);
     //     if (CONFIG.printStackTrace === true) {
@@ -473,6 +470,5 @@ Java.perform(function () {
             }
         });
     }
-
 
 });
